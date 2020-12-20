@@ -130,3 +130,6 @@ dmypy.json
 
 # Bash files
 *.sh
+
+# VSCode settings
+.vscode/
