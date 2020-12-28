@@ -4,7 +4,7 @@ import subprocess
 import os
 import glob
 
-os.chdir(r'/Users/angelo/Pictures/Lightroom/Allegra Scansetti/2012')
+os.chdir(r'/Users/angelo/Pictures/Lightroom/Allegra Scansetti/2013')
 photos = glob.glob('**/*.dng', recursive=True)
 quality = str(92)
 
