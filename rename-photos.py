@@ -13,20 +13,26 @@ datetime_tags = ['DateTimeOriginal', 'CreateDate', 'DateCreated',
 
 for photo in photos:
     photo_name, photo_ext = os.path.splitext(photo)
+    # goes through datetime tags to rename file according to first available tag
     for tag in datetime_tags:
         string = 'exiftool -s -f \'-filename<'+tag+'\' -d %Y-%m-%d_%H-%M-%S%%-c.%%e '+'"'+photo+'"'
         photo_run_output = subprocess.run(string, shell=True, capture_output=True, text=True)
         print(photo_run_output)
+        # uses returncode and stderr to determine
+        # if file has been properly renamed
         if photo_run_output.returncode == 0:
             if photo_run_output.stderr == '':
                 print(photo_name)
                 break
+    # if none of the tags are found, uses
+    # first 8 characters to rename file
     else:
         new_photo = f'{photo_name[0:8]}{photo_ext.lower()}'
         os.rename(photo, new_photo)
         print(photo_name)
         break
 
+# make sure file extension is lowercase
 new_photos = sorted(glob.glob('**/*.*', recursive=True))
 for new_photo in new_photos:
     new_photo_name, new_photo_ext = os.path.splitext(new_photo)
