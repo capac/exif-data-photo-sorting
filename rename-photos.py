@@ -3,6 +3,10 @@
 import os
 import glob
 import subprocess
+import logging
+
+logging.basicConfig(filename='rename.log', level=logging.DEBUG,
+                    format='%(asctime)s:%(levelname)s:%(message)s')
 
 os.chdir(r'/Users/angelo/Pictures/Lightroom/Allegra Scansetti/2013')
 
@@ -19,7 +23,7 @@ for photo in photos:
     for tag in datetime_tags:
         cmd = 'exiftool -s -f \'-filename<'+tag+'\' -d %Y-%m-%d_%H-%M-%S%%-c.%%e '+'\"'+photo+'\"'
         photo_run_output = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-        print(photo_run_output)
+        logging.debug(photo_run_output)
         # use returncode and stderr to determine
         # if file has been properly renamed
         if photo_run_output.returncode == 0:
