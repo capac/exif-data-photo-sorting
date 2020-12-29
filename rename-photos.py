@@ -10,7 +10,8 @@ logging.basicConfig(filename='rename.log', level=logging.DEBUG,
 
 os.chdir(r'/Users/angelo/Pictures/Lightroom/Allegra Scansetti/2013')
 
-photos = sorted(glob.glob('**/*.*', recursive=True), key=os.path.getctime, reverse=True)
+photos = sorted(glob.glob('**/*.*', recursive=True), reverse=True)
+
 print(f'Number of photos: {len(photos)}\n')
 # choice of date/time tags to check for photo creation date, best reasonable
 # choices, however far from being the optimal solution in some cases...
@@ -21,7 +22,7 @@ for photo in photos:
     photo_name, photo_ext = os.path.splitext(photo)
     # go through datetime tags to rename file according to first available tag
     for tag in datetime_tags:
-        cmd = 'exiftool -s -f \'-filename<'+tag+'\' -d %Y-%m-%d_%H-%M-%S%%-c.%%e '+'\"'+photo+'\"'
+        cmd = 'exiftool -s -F -f \'-filename<'+tag+'\' -d %Y-%m-%d_%H-%M-%S%%-c.%%e '+'\"'+photo+'\"'
         photo_run_output = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         logging.debug(photo_run_output)
         # use returncode and stderr to determine
