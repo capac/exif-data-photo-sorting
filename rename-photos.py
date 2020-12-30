@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(filename='rename.log', level=logging.INFO,
                     format='%(asctime)s:%(levelname)s:%(message)s')
 
-os.chdir(r'/Users/angelo/Pictures/Lightroom/Allegra Scansetti/2014')
+os.chdir(r'''/Users/angelo/Pictures/Lightroom/2010 World Cup, Indiana''')
 
 photos = sorted(glob.glob('**/*.*', recursive=True), reverse=True)
 
@@ -24,20 +24,11 @@ for photo in photos:
         cmd = 'exiftool -s -F -v -f \'-FileName<'+tag+'\' -d %Y-%m-%d_%H-%M-%S%%-c.%%e '+'\"'+photo+'\"'
         photo_run_output = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         logging.info(photo_run_output)
-        # use returncode and stderr to determine
-        # if file has been properly renamed
+        # use returncode and second_selection to
+        # determine if file has been properly renamed
         if photo_run_output.returncode == 0:
             if photo_run_output.stderr == '':
-                print(photo)
                 break
-    # if none of the tags are found, use
-    # then first 8 characters to rename file
-    # else:
-    #     photo_name, photo_ext = os.path.splitext(photo)
-    #     new_photo = f'{photo_name[0:8]}{photo_ext.lower()}'
-    #     os.rename(photo, new_photo)
-    #     print(photo_name)
-    #     break
 
 # make sure file extension is lowercase, for some camera
 # photos are saved with upper case extensions.
