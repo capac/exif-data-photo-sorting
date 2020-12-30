@@ -24,8 +24,8 @@ for counter, photo in enumerate(photos):
         cmd = 'exiftool -s -F -v -f \'-FileName<'+tag+'\' -d %Y-%m-%d_%H-%M-%S%%-c.%%e '+'\"'+photo+'\"'
         photo_run_output = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         logging.info(photo_run_output)
-        # use returncode and second_selection to
-        # determine if file has been properly renamed
+        # use returncode and stderr to determine
+        # if file has been properly renamed
         if photo_run_output.returncode == 0:
             if photo_run_output.stderr == '':
                 counter += 1
@@ -34,10 +34,10 @@ for counter, photo in enumerate(photos):
                 break
 
 # make sure file extension is lowercase, for some camera
-# photos are saved with upper case extensions.
+# models photos are saved with upper case extensions.
 new_photos = sorted(glob.glob('**/*.*', recursive=True))
 for new_photo in new_photos:
     new_photo_name, new_photo_ext = os.path.splitext(new_photo)
     new_photo_with_lower_case_ext = f'{new_photo_name}{new_photo_ext.lower()}'
     os.rename(new_photo, new_photo_with_lower_case_ext)
-print('Lower case extension: done!')
+print('Lower case for extensions: done!')
